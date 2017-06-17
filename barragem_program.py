@@ -17,11 +17,11 @@ while(True):
 	bChangedState = False
 	
 	try:
-		arq = open('/home/pi/Desktop/Barragem/barragem_input_control.txt', 'r')
+		arq = open('/tmp/barragem_input_control.txt', 'r')
 	except FileNotFoundError:
-		arq = open('/home/pi/Desktop/Barragem/barragem_input_control.txt', 'w')
+		arq = open('/tmp/barragem_input_control.txt', 'w')
 		arq.write('0|0|0')
-		arq = open('/home/pi/Desktop/Barragem/barragem_input_control.txt', 'r')
+		arq = open('/tmp/barragem_input_control.txt', 'r')
 		bChangedState = True
 
 	comando = arq.read().split("|")
@@ -45,8 +45,17 @@ while(True):
 		iUltimoOutputComporta3 = iOutputComporta3
 		bChangedState = True
 	
+	bDeuErro = False
+	for i in range(0,3):
+		if comando[i] != "0" and comando[i] != "1":
+			bDeuErro = True
+			break
+			
+	if bDeuErro:
+		continue
 	
 	if bChangedState == True:
+		print('')
 		print('Comporta 1: ', comando[0])
 		print('Comporta 2: ', comando[1])
 		print('Comporta 3: ', comando[2])
